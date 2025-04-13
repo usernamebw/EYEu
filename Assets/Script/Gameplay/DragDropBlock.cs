@@ -6,24 +6,27 @@ public class DragDropBlock : MonoBehaviour
 {
     private bool isDragging = false;
     private Vector3 originalPosition;
+    private Transform originalParent;
     private Camera mainCamera;
-    public LayerMask dropZoneLayer; // Assign DropZone layer in inspector
+    public LayerMask dropZoneLayer;
     public float dropCheckRadius = 1f;
 
     private Transform assignedSlot;
+    private DropZone currentZone;
 
-    private void Start()
+    void Start()
     {
         originalPosition = transform.position;
+        originalParent = transform.parent;
         mainCamera = Camera.main;
     }
 
-    private void Update()
+    void Update()
     {
         if (isDragging)
         {
             Vector3 mousePos = Input.mousePosition;
-            mousePos.z = 2f; // Adjust based on camera distance
+            mousePos.z = 2f;
             transform.position = mainCamera.ScreenToWorldPoint(mousePos);
         }
     }
@@ -36,47 +39,42 @@ public class DragDropBlock : MonoBehaviour
     private void OnMouseUp()
     {
         isDragging = false;
-
         Collider[] hits = Physics.OverlapSphere(transform.position, dropCheckRadius, dropZoneLayer);
-        Debug.Log($"[DropCheck] Checking {hits.Length} colliders in radius {dropCheckRadius}");
 
         foreach (var hit in hits)
         {
-            Debug.Log($"[DropCheck] Hit object: {hit.gameObject.name}");
-
-            if (hit.gameObject == this.gameObject)
-                continue;
-
             DropZone zone = hit.GetComponent<DropZone>() ?? hit.GetComponentInParent<DropZone>();
 
             if (zone != null)
             {
-                Debug.Log("[DropCheck] Valid DropZone found.");
-
                 assignedSlot = zone.GetAvailableSlot();
                 if (assignedSlot != null)
                 {
                     transform.position = assignedSlot.position;
-                    transform.SetParent(assignedSlot); // Make the block a child of the slot
-                    Debug.Log($"[DropCheck] Snapped to slot at: {assignedSlot.position}");
-
-                    zone.UpdateAnswerDisplay(); // Update TMP answer text
+                    transform.SetParent(assignedSlot);
+                    currentZone = zone;
+                    zone.UpdateAnswerDisplay();
                     return;
-                }
-                else
-                {
-                    Debug.Log("[DropCheck] No available slot.");
                 }
             }
         }
-
-        Debug.Log("[DropCheck] Returning to original position.");
-        transform.position = originalPosition;
+        ReturnToOriginalPosition();
     }
 
-    private void OnDrawGizmosSelected()
+    public void ResetBlock()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, dropCheckRadius);
+        ReturnToOriginalPosition();
+    }
+
+    private void ReturnToOriginalPosition()
+    {
+        transform.position = originalPosition;
+        transform.SetParent(originalParent);
+
+        if (currentZone != null)
+        {
+            currentZone.UnassignBlock(transform);
+            currentZone = null;
+        }
     }
 }

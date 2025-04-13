@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro; // Required for TextMeshProUGUI
+using TMPro;
 
 public class DropZone : MonoBehaviour
 {
     public Transform[] dropSlots;
-    public TextMeshProUGUI answerText; // Assign this from Inspector
+    public TextMeshProUGUI answerText;
 
     private bool[] slotOccupied;
 
-    private void Awake()
+    void Awake()
     {
         slotOccupied = new bool[dropSlots.Length];
     }
@@ -22,7 +22,6 @@ public class DropZone : MonoBehaviour
             if (!slotOccupied[i])
             {
                 slotOccupied[i] = true;
-                UpdateAnswerDisplay(); // update text when block snapped
                 return dropSlots[i];
             }
         }
@@ -35,18 +34,28 @@ public class DropZone : MonoBehaviour
         {
             slotOccupied[i] = false;
         }
+        UpdateAnswerDisplay();
+    }
 
-        UpdateAnswerDisplay(); // Clear answer text
+    public void UnassignBlock(Transform block)
+    {
+        for (int i = 0; i < dropSlots.Length; i++)
+        {
+            if (dropSlots[i].childCount > 0 && dropSlots[i].GetChild(0) == block)
+            {
+                slotOccupied[i] = false;
+                UpdateAnswerDisplay();
+                return;
+            }
+        }
     }
 
     public string GetSubmittedAnswer()
     {
         string answer = "";
-
         for (int i = 0; i < dropSlots.Length; i++)
         {
             Transform slot = dropSlots[i];
-
             if (slot.childCount > 0)
             {
                 NumberBlock block = slot.GetChild(0).GetComponent<NumberBlock>();
@@ -56,7 +65,6 @@ public class DropZone : MonoBehaviour
                 }
             }
         }
-
         return answer;
     }
 
