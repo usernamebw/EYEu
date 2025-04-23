@@ -2,17 +2,18 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+// IshiharaPlateData.cs
 [System.Serializable]
 public class IshiharaPlateData
 {
-    public string plateName;
+    public int plateNumber;
     public string normalAnswer;
-    public string partialColorBlindAnswer;
+    public string partialAnswer;
+    public string userInput; // This will store the user's answer for this plate
 }
 
-
 [System.Serializable]
-public class IshiharaPlateDataList
+public class IshiharaDataWrapper
 {
     public List<IshiharaPlateData> plates;
 }

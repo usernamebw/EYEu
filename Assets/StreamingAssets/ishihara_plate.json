@@ -1,0 +1,130 @@
+{
+  "plates": [
+    {
+      "plateNumber": 1,
+      "normalAnswer": "12",
+      "partialAnswer": "12",
+      "userInput": "" 
+    },
+    {
+      "plateNumber": 2,
+      "normalAnswer": "8",
+      "partialAnswer": "3",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 3,
+      "normalAnswer": "6",
+      "partialAnswer": "5",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 4,
+      "normalAnswer": "29",
+      "partialAnswer": "70",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 5,
+      "normalAnswer": "57",
+      "partialAnswer": "35",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 6,
+      "normalAnswer": "5",
+      "partialAnswer": "2",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 7,
+      "normalAnswer": "3",
+      "partialAnswer": "5",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 8,
+      "normalAnswer": "15",
+      "partialAnswer": "17",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 9,
+      "normalAnswer": "74",
+      "partialAnswer": "21",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 10,
+      "normalAnswer": "2",
+      "partialAnswer": "3",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 11,
+      "normalAnswer": "6",
+      "partialAnswer": "4",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 12,
+      "normalAnswer": "97",
+      "partialAnswer": "21",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 13,
+      "normalAnswer": "45",
+      "partialAnswer": "99",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 14,
+      "normalAnswer": "5",
+      "partialAnswer": "9",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 15,
+      "normalAnswer": "7",
+      "partialAnswer": "19",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 16,
+      "normalAnswer": "16",
+      "partialAnswer": "90",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 17,
+      "normalAnswer": "73",
+      "partialAnswer": "11",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 18,
+      "normalAnswer": "26",
+      "partialAnswer": "6",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 19,
+      "normalAnswer": "42",
+      "partialAnswer": "4",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 20,
+      "normalAnswer": "35",
+      "partialAnswer": "3",
+      "userInput": ""
+    },
+    {
+      "plateNumber": 21,
+      "normalAnswer": "96",
+      "partialAnswer": "6",
+      "userInput": ""
+    }
+  ]
+}
