@@ -16,9 +16,15 @@ public class IshiharaGameManager : MonoBehaviour
     public Text plateNumberText;
     public Button submitButton;
     public Text feedbackText;
+    public Scrollbar timerScrollbar; // Timer UI scrollbar
+
 
     private int currentPlateIndex = 0;
     private List<string> userAnswers = new List<string>();
+
+    private float timePerPlate = 12f;
+    private float currentTimer;
+    private bool timerRunning = false;
 
     public string filePath;
 
@@ -30,6 +36,61 @@ public class IshiharaGameManager : MonoBehaviour
         submitButton.onClick.AddListener(SubmitAnswer);
 
         UpdatePlate();
+    }
+
+    void Update()
+    {
+        if (timerRunning)
+        {
+            currentTimer -= Time.deltaTime;
+
+            if (timerScrollbar != null)
+                timerScrollbar.size = currentTimer / timePerPlate;
+
+            if (currentTimer <= 0)
+            {
+                timerRunning = false;
+                AutoSubmit();
+            }
+        }
+    }
+
+
+    private void StartTimer()
+    {
+        currentTimer = timePerPlate;
+        timerRunning = true;
+
+        if (timerScrollbar != null)
+            timerScrollbar.size = 1f;
+    }
+
+
+    private void AutoSubmit()
+    {
+        string randomAnswer = Random.Range(1, 10).ToString();
+
+        foreach (var slot in answerSlots)
+        {
+            foreach (Transform child in slot)
+                Destroy(child.gameObject);
+        }
+
+        if (currentPlateIndex < plateDataList.Count)
+        {
+            plateDataList[currentPlateIndex].userInput = randomAnswer;
+            SaveData();
+        }
+
+        currentPlateIndex++;
+        if (currentPlateIndex >= plateDataList.Count)
+        {
+            EvaluateResult();
+        }
+        else
+        {
+            UpdatePlate();
+        }
     }
 
     private void LoadData()
@@ -90,33 +151,29 @@ public class IshiharaGameManager : MonoBehaviour
         if (currentPlateIndex < plateDataList.Count)
         {
             plateDataList[currentPlateIndex].userInput = answer;
-            Debug.Log($"[SubmitAnswer] Saved user input '{answer}' to plate {currentPlateIndex + 1}");
             SaveData();
         }
 
-        if (currentPlateIndex >= plateDataList.Count - 1)
-        {
-            Debug.Log("[SubmitAnswer] All plates answered. Evaluating result...");
-            EvaluateResult();
-        }
-        else
-        {
-            currentPlateIndex++;
-            Debug.Log($"[SubmitAnswer] New currentPlateIndex: {currentPlateIndex}");
-            UpdatePlate();
-        }
+        currentPlateIndex++;
 
+        if (currentPlateIndex >= plateDataList.Count)
+        {
+            EvaluateResult();
+            timerRunning = false; // No more plates
+            return;
+        }
+        
+
+        // Prepare for next plate
         DropZone[] dropZones = FindObjectsOfType<DropZone>();
         foreach (var zone in dropZones)
-        {
             zone.ResetSlots();
-        }
 
         DragDropBlock[] blocks = FindObjectsOfType<DragDropBlock>();
         foreach (var block in blocks)
-        {
             block.ResetBlock();
-        }
+
+        UpdatePlate(); // This will restart the timer via StartTimer()
     }
 
     private void EvaluateResult()
@@ -182,5 +239,6 @@ public class IshiharaGameManager : MonoBehaviour
         }
 
         plateNumberText.text = $"Plate {currentPlateIndex + 1}";
+        StartTimer();
     }
 }
