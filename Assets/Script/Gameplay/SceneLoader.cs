@@ -9,14 +9,13 @@ public class SceneLoader : MonoBehaviour
 
     [Header("Scene Transition Settings")]
     public string sceneToLoad = "PlayScene";
-    public Image fadeImage;           // Assign your UI full-screen image here
+    public Image fadeImage;
     public float fadeDuration = 1f;
 
     private bool isFading = false;
 
     private void Awake()
     {
-        // Singleton pattern to persist across scenes
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -25,18 +24,22 @@ public class SceneLoader : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+        Debug.Log("[SceneLoader] Awake - Singleton created");
     }
 
     private void Start()
     {
         if (fadeImage != null)
         {
-            // Ensure the fade image canvas also persists
             DontDestroyOnLoad(fadeImage.transform.root.gameObject);
-            StartCoroutine(FadeIn()); // Fade from white on scene start
+            Debug.Log("[SceneLoader] Start - Begin initial FadeIn");
+            StartCoroutine(FadeIn());
+        }
+        else
+        {
+            Debug.LogWarning("[SceneLoader] Start - No fadeImage assigned!");
         }
 
-        // Subscribe to scene change to auto fade in on new scene load
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
@@ -47,6 +50,7 @@ public class SceneLoader : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log($"[SceneLoader] Scene Loaded: {scene.name} - Begin FadeIn");
         if (fadeImage != null)
         {
             StartCoroutine(FadeIn());
@@ -57,18 +61,23 @@ public class SceneLoader : MonoBehaviour
     {
         if (!isFading)
         {
+            Debug.Log("[SceneLoader] LoadSceneWithFade - Begin FadeAndLoadScene");
             StartCoroutine(FadeAndLoadScene());
+        }
+        else
+        {
+            Debug.LogWarning("[SceneLoader] LoadSceneWithFade - Already fading!");
         }
     }
 
     private IEnumerator FadeAndLoadScene()
     {
         isFading = true;
+        Debug.Log("[SceneLoader] FadeAndLoadScene - Fading to white");
 
         float timer = 0f;
         Color color = fadeImage.color;
 
-        // Fade to white
         while (timer < fadeDuration)
         {
             color.a = timer / fadeDuration;
@@ -79,14 +88,18 @@ public class SceneLoader : MonoBehaviour
 
         color.a = 1f;
         fadeImage.color = color;
+        Debug.Log("[SceneLoader] FadeAndLoadScene - Fade to white complete");
 
         yield return new WaitForSeconds(0.1f);
 
+        Debug.Log($"[SceneLoader] Loading scene: {sceneToLoad}");
         SceneManager.LoadScene(sceneToLoad);
     }
 
     private IEnumerator FadeIn()
     {
+        Debug.Log("[SceneLoader] FadeIn - Start fading from white");
+
         float timer = 0f;
         Color color = fadeImage.color;
         color.a = 1f;
@@ -103,5 +116,7 @@ public class SceneLoader : MonoBehaviour
         color.a = 0f;
         fadeImage.color = color;
         isFading = false;
+
+        Debug.Log("[SceneLoader] FadeIn - Fade from white complete");
     }
 }

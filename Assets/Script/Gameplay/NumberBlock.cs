@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class NumberBlock : MonoBehaviour
 {
-    public int numberValue; // Set this in the Inspector (e.g., 1, 2, 3...)
+    public string numberValue; // Set this in the Inspector (e.g., 1, 2, 3...)
 }

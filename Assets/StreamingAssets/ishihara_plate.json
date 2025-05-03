@@ -57,49 +57,49 @@
     {
       "plateNumber": 10,
       "normalAnswer": "2",
-      "partialAnswer": "3",
+      "partialAnswer": "",
       "userInput": ""
     },
     {
       "plateNumber": 11,
       "normalAnswer": "6",
-      "partialAnswer": "4",
+      "partialAnswer": "",
       "userInput": ""
     },
     {
       "plateNumber": 12,
       "normalAnswer": "97",
-      "partialAnswer": "21",
+      "partialAnswer": "",
       "userInput": ""
     },
     {
       "plateNumber": 13,
       "normalAnswer": "45",
-      "partialAnswer": "99",
+      "partialAnswer": "",
       "userInput": ""
     },
     {
       "plateNumber": 14,
       "normalAnswer": "5",
-      "partialAnswer": "9",
+      "partialAnswer": "",
       "userInput": ""
     },
     {
       "plateNumber": 15,
       "normalAnswer": "7",
-      "partialAnswer": "19",
+      "partialAnswer": "",
       "userInput": ""
     },
     {
       "plateNumber": 16,
       "normalAnswer": "16",
-      "partialAnswer": "90",
+      "partialAnswer": "",
       "userInput": ""
     },
     {
       "plateNumber": 17,
       "normalAnswer": "73",
-      "partialAnswer": "11",
+      "partialAnswer": "",
       "userInput": ""
     },
     {
@@ -111,13 +111,13 @@
     {
       "plateNumber": 19,
       "normalAnswer": "42",
-      "partialAnswer": "4",
+      "partialAnswer": "2",
       "userInput": ""
     },
     {
       "plateNumber": 20,
       "normalAnswer": "35",
-      "partialAnswer": "3",
+      "partialAnswer": "5",
       "userInput": ""
     },
     {

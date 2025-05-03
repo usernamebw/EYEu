@@ -17,6 +17,8 @@ public class IshiharaGameManager : MonoBehaviour
     public Button submitButton;
     public Text feedbackText;
     public Scrollbar timerScrollbar; // Timer UI scrollbar
+    public GameObject testOverCanvas;  // Reference to the "Test Over" Canvas
+    public Button goToResultButton;    // Reference to the button to transition to the ResultScene
 
 
     private int currentPlateIndex = 0;
@@ -34,6 +36,9 @@ public class IshiharaGameManager : MonoBehaviour
         LoadData();
         submitButton.onClick.RemoveAllListeners();
         submitButton.onClick.AddListener(SubmitAnswer);
+        // Setup button to transition to ResultScene
+        goToResultButton.onClick.AddListener(GoToResultScene);
+
 
         UpdatePlate();
     }
@@ -197,17 +202,38 @@ public class IshiharaGameManager : MonoBehaviour
         float normalRatio = normal / total;
         float partialRatio = partial / total;
 
-        string finalFeedback;
-
+        // Save result into GameResultData
         if (normalRatio >= 0.8f)
-            finalFeedback = "You have normal vision.";
+        {
+            GameResultData.visionResult = "normal";
+        }
         else if (partialRatio >= 0.5f)
-            finalFeedback = "You may have partial color blindness.";
+        {
+            GameResultData.visionResult = "partial";
+        }
         else
-            finalFeedback = "You may have full color blindness.";
+        {
+            GameResultData.visionResult = "full";
+        }
 
-        feedbackText.text = finalFeedback;
-        Debug.Log("[Evaluation] " + finalFeedback);
+        // If test is over, show the "Test Over" canvas
+        ShowTestOverCanvas();
+    }
+
+    private void ShowTestOverCanvas()
+    {
+        // Activate the "Test Over" Canvas
+        if (testOverCanvas != null)
+        {
+            testOverCanvas.SetActive(true);
+        }
+    }
+
+    public void GoToResultScene()
+    {
+        // Load the Result Scene
+        SceneLoader.Instance.sceneToLoad = "ResultScene";
+        SceneLoader.Instance.LoadSceneWithFade();
     }
 
     private string GetCurrentAnswer()
