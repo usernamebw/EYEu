@@ -53,7 +53,10 @@ public class SceneLoader : MonoBehaviour
         Debug.Log($"[SceneLoader] Scene Loaded: {scene.name} - Begin FadeIn");
         if (fadeImage != null)
         {
+            fadeImage.gameObject.SetActive(true); 
             StartCoroutine(FadeIn());
+        } else {
+          Debug.LogWarning("[SceneLoader] No fadeImage found on scene load!");
         }
     }
 
