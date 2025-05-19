@@ -24,3 +24,4 @@ public class HandInteractionController : MonoBehaviour
         anim.SetFloat("Grip", gripValue);
     }
 }
+
