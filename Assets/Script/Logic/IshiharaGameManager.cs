@@ -24,7 +24,7 @@ public class IshiharaGameManager : MonoBehaviour
     private int currentPlateIndex = 0;
     private List<string> userAnswers = new List<string>();
 
-    private float timePerPlate = 12f;
+    private float timePerPlate = 18f;
     private float currentTimer;
     private bool timerRunning = false;
 
@@ -36,9 +36,7 @@ public class IshiharaGameManager : MonoBehaviour
         LoadData();
         submitButton.onClick.RemoveAllListeners();
         submitButton.onClick.AddListener(SubmitAnswer);
-        // Setup button to transition to ResultScene
         goToResultButton.onClick.AddListener(GoToResultScene);
-
 
         UpdatePlate();
     }
@@ -60,7 +58,6 @@ public class IshiharaGameManager : MonoBehaviour
         }
     }
 
-
     private void StartTimer()
     {
         currentTimer = timePerPlate;
@@ -70,16 +67,11 @@ public class IshiharaGameManager : MonoBehaviour
             timerScrollbar.size = 1f;
     }
 
-
     private void AutoSubmit()
     {
         string randomAnswer = Random.Range(1, 10).ToString();
 
-        foreach (var slot in answerSlots)
-        {
-            foreach (Transform child in slot)
-                Destroy(child.gameObject);
-        }
+        ResetAllBlocksAndSlots();
 
         if (currentPlateIndex < plateDataList.Count)
         {
@@ -88,13 +80,32 @@ public class IshiharaGameManager : MonoBehaviour
         }
 
         currentPlateIndex++;
+
         if (currentPlateIndex >= plateDataList.Count)
         {
             EvaluateResult();
+            timerRunning = false;
         }
         else
         {
             UpdatePlate();
+        }
+    }
+
+    private void ResetAllBlocksAndSlots()
+    {
+        // Reset all number blocks to their original positions
+        DragDropBlock[] blocks = FindObjectsOfType<DragDropBlock>();
+        foreach (var block in blocks)
+        {
+            block.ResetBlock();
+        }
+
+        // Reset all drop zones slots and answer text
+        DropZone[] dropZones = FindObjectsOfType<DropZone>();
+        foreach (var zone in dropZones)
+        {
+            zone.ResetSlots();
         }
     }
 
@@ -167,16 +178,8 @@ public class IshiharaGameManager : MonoBehaviour
             timerRunning = false; // No more plates
             return;
         }
-        
 
-        // Prepare for next plate
-        DropZone[] dropZones = FindObjectsOfType<DropZone>();
-        foreach (var zone in dropZones)
-            zone.ResetSlots();
-
-        DragDropBlock[] blocks = FindObjectsOfType<DragDropBlock>();
-        foreach (var block in blocks)
-            block.ResetBlock();
+        ResetAllBlocksAndSlots();
 
         UpdatePlate(); // This will restart the timer via StartTimer()
     }
